@@ -1,12 +1,18 @@
-import { BaseQueryFn, FetchArgs, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ICustomErrorType } from "@/types/type";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  createApi,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: '',
-  credentials: 'include',
+  baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as any).auth.accessToken;
     if (token) {
-      headers.set('authorization', `Bearer ${token}`);
+      headers.set("authorization", `Bearer ${token}`);
     }
     return headers;
   },
@@ -15,7 +21,8 @@ const baseQuery = fetchBaseQuery({
 export const rootApi = createApi({
   baseQuery: baseQuery as BaseQueryFn<
     string | FetchArgs,
-    unknown
+    unknown,
+    ICustomErrorType
   >,
   tagTypes: [],
   endpoints: () => ({}),

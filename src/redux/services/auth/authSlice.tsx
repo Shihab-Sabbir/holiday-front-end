@@ -6,8 +6,10 @@ interface AuthState {
   accessToken: string;
   refreshToken?: string;
   user: {
-    firstName: string;
-    lastName: string;
+    name : {
+      firstName: string;
+      lastName: string;
+    },
     phone_number: string;
     email: string;
     role: string;
@@ -19,8 +21,10 @@ const initialState: AuthState = {
   accessToken: "",
   refreshToken: undefined,
   user: {
-    firstName: "",
-    lastName: "",
+    name:{
+      firstName: "",
+      lastName: "",
+    },
     phone_number: "",
     email: "",
     role: "",
@@ -29,7 +33,7 @@ const initialState: AuthState = {
 };
 
 const loadState = () => {
-  const storedState = localStorage.getItem("authState");
+  const storedState = localStorage.getItem("holiday-auth");
   if (storedState) {
     return JSON.parse(storedState);
   }
@@ -37,7 +41,7 @@ const loadState = () => {
 };
 
 const saveState = (state: AuthState) => {
-  localStorage.setItem("authState", JSON.stringify(state));
+  localStorage.setItem("holiday-auth", JSON.stringify(state));
 };
 
 const authSlice = createSlice({
@@ -45,6 +49,7 @@ const authSlice = createSlice({
   initialState: loadState(),
   reducers: {
     setAuthData: (state, action: PayloadAction<AuthState>) => {
+      console.log({action})
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
@@ -54,7 +59,7 @@ const authSlice = createSlice({
       state.accessToken = "";
       state.refreshToken = undefined;
       state.user = initialState.user;
-      localStorage.removeItem("authState");
+      localStorage.removeItem("holiday-auth");
     },
   },
 });

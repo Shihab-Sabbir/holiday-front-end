@@ -1,7 +1,15 @@
 export interface ILoginUserResponse {
-  accessToken: string;
-  refreshToken?: string;
-  user: IUser | null;
+  data: {
+    accessToken: string;
+    refreshToken?: string;
+    user: {
+      name: UserName;
+      phone_number: string;
+      email: string;
+      role: string;
+      password: string;
+    };
+  };
 }
 
 export interface ILoginUser {

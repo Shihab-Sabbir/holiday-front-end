@@ -4,7 +4,7 @@ import AddService from '../components/admin/addService/AddService'
 export default function page() {
   return (
     <div>
-        <AddService/>
+        Wellcome to Holiday Admin Panel !
     </div>
   )
 }

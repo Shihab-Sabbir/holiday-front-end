@@ -1,11 +1,15 @@
+import AuthChecker from "@/lib/AuthChecker";
+
 export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  
+
   return (
-    <div>
+    <AuthChecker userRole={['admin','superadmin','user']}>
          {children}
-    </div>
+    </AuthChecker>
   )
 }

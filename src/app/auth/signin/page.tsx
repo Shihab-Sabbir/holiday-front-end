@@ -1,8 +1,11 @@
+'use client'
+
 import React, { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useLoginUserMutation } from "@/redux/api/auth/authApi";
 import { setAuthData } from "@/redux/services/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import Link from "next/link";
 
 export default function Signin() {
   const [loginUser, { data, isLoading, isSuccess, error }] =
@@ -45,8 +48,8 @@ export default function Signin() {
   }, [isSuccess, data]);
 
   return (
-    <div className="py-5 h-[300px]">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="h-screen w-screen grid place-content-center">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-5 h-fit w-[400px] shadow-lg p-4">
         <TextField
           required
           name="email"
@@ -75,6 +78,7 @@ export default function Signin() {
         >
          {isLoading ? "Signing..." : "Sign in"}
         </Button>
+        <p className="pt-4">Do not have any account ? Please <Link href='/auth/signup' className="text-primary">Signup</Link></p>
       </form>
     </div>
   );

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react';
 import { Button, TextField } from "@mui/material";
 import { useSignUpMutation } from '@/redux/api/auth/authApi';
@@ -52,8 +54,8 @@ export default function Signup() {
   console.log({ data, isLoading, isSuccess, error });
 
   return (
-    <div className="py-5 min-h-[300px]">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="h-screen w-screen grid place-content-center">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-5 h-fit w-[400px] shadow-lg p-4">
         <TextField
           required
           name="firstName"
@@ -108,7 +110,7 @@ export default function Signup() {
         >
           Sign up
         </Button>
-        <p className="pt-4">Do not have any account ? Please <Link href='/auth/signup' className="text-primary">Signup</Link></p>
+        <p className="pt-4">Do not have any account ? Please <Link href='/auth/signin' className="text-primary">Signin</Link></p>
       </form>
     </div>
   );

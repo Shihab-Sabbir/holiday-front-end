@@ -8,6 +8,7 @@ export enum SERVICE_TYPE {
 }
 
 export interface IService {
+  _id?: string;
   service: SERVICE_TYPE;
   name: string;
   from: string;
@@ -20,4 +21,11 @@ export interface IService {
   description: string;
   country: string;
   image: string | null;
+}
+
+export interface IServiceResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: IService[];
 }

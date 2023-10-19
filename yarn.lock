@@ -576,6 +576,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/utils@npm:^5.14.11":
+  version: 5.14.14
+  resolution: "@mui/utils@npm:5.14.14"
+  dependencies:
+    "@babel/runtime": ^7.23.1
+    "@types/prop-types": ^15.7.7
+    prop-types: ^15.8.1
+    react-is: ^18.2.0
+  peerDependencies:
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: b13afa9fd7503d9e22d68ab9d6bcaf38bcf02b8c18a8b175b5c0bf082a386b34a631abe4b22fd86f2cc55edf0173fec80953a4ebe810117167fd38d32c1d3d80
+  languageName: node
+  linkType: hard
+
 "@mui/utils@npm:^5.14.13, @mui/utils@npm:^5.14.3":
   version: 5.14.13
   resolution: "@mui/utils@npm:5.14.13"
@@ -591,6 +609,24 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 5f04382d7761d35c5f53bcc0ce91c29aba0b3c0afb731f01d2ff078b05afe8098dee412538d846ab3a4b00eec934d46d730f9ef2ef493c3db885e2672480b6f0
+  languageName: node
+  linkType: hard
+
+"@mui/x-data-grid@npm:^6.16.2":
+  version: 6.16.2
+  resolution: "@mui/x-data-grid@npm:6.16.2"
+  dependencies:
+    "@babel/runtime": ^7.23.1
+    "@mui/utils": ^5.14.11
+    clsx: ^2.0.0
+    prop-types: ^15.8.1
+    reselect: ^4.1.8
+  peerDependencies:
+    "@mui/material": ^5.4.1
+    "@mui/system": ^5.4.1
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  checksum: a558af904d4f4e8000eb867c45b12ba7b870e9810567ccdb1f1c2266d8b696f6b462e0380d3294eb8fe1a2828f614a0edbdc32c898a6b4f9c02190e3a625ec23
   languageName: node
   linkType: hard
 
@@ -4340,6 +4376,7 @@ __metadata:
     "@mui/icons-material": ^5.14.13
     "@mui/lab": ^5.0.0-alpha.148
     "@mui/material": ^5.14.13
+    "@mui/x-data-grid": ^6.16.2
     "@reduxjs/toolkit": ^1.9.7
     "@types/node": ^20
     "@types/react": ^18

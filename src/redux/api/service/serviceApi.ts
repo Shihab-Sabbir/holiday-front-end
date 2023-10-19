@@ -1,4 +1,4 @@
-import { IService } from "./type";
+import { IService, IServiceResponse } from "./type";
 import { rootApi } from "../rootApi";
 
 export const serviceApi = rootApi.injectEndpoints({
@@ -10,7 +10,7 @@ export const serviceApi = rootApi.injectEndpoints({
         body,
       }),
     }),
-    getAllService: builder.query<IService[], void>({
+    getAllService: builder.query<IServiceResponse, void>({
       query: () => ({
         url: "/services",
         method: "GET",

@@ -7,7 +7,7 @@ export default function Layout({
   }) {
     return (
       <div className="">
-          <div className="max-w-[1200px] mx-auto flex items-start">
+          <div className="max-w-[1400px] mx-auto flex items-start">
           <div className="lg:w-[250px]">
             <SideBar/>
             </div>

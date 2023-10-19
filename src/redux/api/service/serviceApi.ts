@@ -9,18 +9,21 @@ export const serviceApi = rootApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags:['service']
     }),
     getAllService: builder.query<IServiceResponse, void>({
       query: () => ({
         url: "/services",
         method: "GET",
       }),
+      providesTags:['service']
     }),
     getServiceById: builder.query<IService, string>({
       query: (id) => ({
         url: `/services/${id}`,
         method: "GET",
       }),
+      providesTags:['service']
     }),
     updateService: builder.mutation<
       IService,
@@ -31,12 +34,14 @@ export const serviceApi = rootApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
+      invalidatesTags:['service']
     }),
     deleteService: builder.mutation<void, string>({
       query: (id) => ({
         url: `/services/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags:['service']
     }),
   }),
 });

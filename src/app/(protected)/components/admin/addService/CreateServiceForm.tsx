@@ -12,6 +12,7 @@ import {
 import { useCreateServiceMutation } from "@/redux/api/service/serviceApi";
 import { SERVICE_TYPE } from "@/redux/api/service/type";
 import ImageUpload from "@/app/components/shared/image/ImageUpload";
+import { getUploadedLink } from "@/app/components/shared/image/imageUploader";
 
 interface FormData {
   [key: string]: string | Date | File | null;
@@ -29,29 +30,14 @@ export default function CreateServiceForm() {
     location: "",
     time: "00:00",
     description: "",
-    country: "",
-    image: null,
+    country: ""
   });
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
-  const [createService,{data,isLoading,isSuccess,error}] = useCreateServiceMutation()
-  console.log({data,isLoading,isSuccess,error})
+  const [uploadedImage, setUploadedImage] = useState<string | File | null>(null);
+  const [createService, { data, isLoading, isSuccess, error }] = useCreateServiceMutation();
+
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    setFormData({
-      name: "",
-      from: "",
-      to: "",
-      startDate: new Date(),
-      price: "",
-      capacity: "",
-      location: "",
-      time: "00:00",
-      description: "",
-      country: "",
-      image: null,
-    });
-    setUploadedImage(null);
   };
 
   const handleFormChange = (field: string, value: string | Date) => {
@@ -60,43 +46,17 @@ export default function CreateServiceForm() {
       [field]: value,
     });
   };
+ 
+  console.log("uploadedImage :", uploadedImage);
 
-  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files && event.target.files[0];
-  //   if (file) {
-  //     setFormData({ ...formData, image: file });
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       setImagePreview(reader.result as string);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  const handleSubmit = () => {
-    console.log("Selected Service:", selectedService);
-    console.log("Form Datam:", {service:selectedService,...formData});
-
+  const handleSubmit = async () => {
+    const imageUrl = await getUploadedLink(uploadedImage!)
+    console.log("imageUrl :", imageUrl);
     createService({
       service: selectedService as SERVICE_TYPE,
+      image: imageUrl,
       ...formData,
-    })
-
-    setSelectedService("flight");
-    // setFormData({
-    //   name: "",
-    //   from: "",
-    //   to: "",
-    //   startDate: new Date(),
-    //   price: "",
-    //   capacity: "",
-    //   location: "",
-    //   time: "00:00",
-    //   description: "",
-    //   country: "",
-    //   image: null,
-    // });
-    setUploadedImage(null);
+    });
   };
 
   return (
@@ -148,9 +108,7 @@ export default function CreateServiceForm() {
           autoFocus
           type="date"
           value={formData.startDate}
-          onChange={(e) =>
-            handleFormChange("startDate",e.target.value)
-          }
+          onChange={(e) => handleFormChange("startDate", e.target.value)}
         />
 
         <TextField
@@ -179,9 +137,7 @@ export default function CreateServiceForm() {
           label="Time"
           type="time"
           value={formData.time}
-          onChange={(e) =>
-            handleFormChange("time", e.target.value)
-          }
+          onChange={(e) => handleFormChange("time", e.target.value)}
         />
         <TextField
           name="country"
@@ -198,8 +154,10 @@ export default function CreateServiceForm() {
           onChange={(e) => handleFormChange("description", e.target.value)}
         />
 
-        <ImageUpload uploadedImage={uploadedImage} setUploadedImage={setUploadedImage}/>
-
+        <ImageUpload
+          uploadedImage={uploadedImage}
+          setUploadedImage={setUploadedImage}
+        />
       </div>
       <Button
         fullWidth

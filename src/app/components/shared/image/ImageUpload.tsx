@@ -3,23 +3,25 @@ import Image from 'next/image';
 import { BiSolidImageAdd } from 'react-icons/bi';
 import { TiDelete } from 'react-icons/ti';
 
-export default function ImageUpload({uploadedImage, setUploadedImage}) {
-    const [logo, setLogo] = useState(null); 
+export default function ImageUpload({uploadedImage, setUploadedImage}:{uploadedImage:any, setUploadedImage:any}) {
+    const [logo, setLogo] = useState<any>(null); 
 
-    const fileInputRef = useRef(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     const handleImageClick = () => {
-        fileInputRef.current.click();
+        if( fileInputRef.current){
+            fileInputRef.current.click();
+        }
     };
 
-    const handleImageUpload = (e) => {
+    const handleImageUpload = (e:any) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = () => {
                 const imageDataURL = reader.result;
                 setUploadedImage(file);
-                setLogo(imageDataURL);
+                setLogo(imageDataURL!);
             };
             reader.readAsDataURL(file);
         }
@@ -28,9 +30,11 @@ export default function ImageUpload({uploadedImage, setUploadedImage}) {
     const handleImageRemove = () => {
         setUploadedImage(null);
         setLogo(null); 
-        fileInputRef.current.value = null
+        if( fileInputRef.current?.value){
+            fileInputRef.current.value = ''
+        }
     };
-   console.log({uploadedImage,logo})
+
     return (
         <div>
             <input
@@ -41,7 +45,7 @@ export default function ImageUpload({uploadedImage, setUploadedImage}) {
                 style={{ display: 'none' }}
             />
             {(!!uploadedImage || !!logo) ? (
-                <div className="relative flex-1 h-[170px]">
+                <div className="relative  h-[170px]">
                     <Image
                         src={(typeof(uploadedImage) == 'string' || uploadedImage?.result) ? (uploadedImage?.result ||uploadedImage): !!logo ? logo : ''}
                         alt="logo image"

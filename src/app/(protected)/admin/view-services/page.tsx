@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetAllServiceQuery } from '@/redux/api/service/serviceApi'
+import { useDeleteServiceMutation, useGetAllServiceQuery } from '@/redux/api/service/serviceApi'
 import { IService, IServiceResponse, SERVICE_TYPE } from '@/redux/api/service/type';
 import React, { useEffect, useState } from 'react'
 import { getColumns } from './utils/getColumns';
@@ -21,7 +21,8 @@ interface IFormattedRow {
 export default function ViewServices() {
     const [rows, setRows] = useState<Partial<IFormattedRow>[] | []>([]); 
     const { data, isLoading, error } = useGetAllServiceQuery();
-  
+    const [deleteService, {  isDeleteLoading, isDeleteSuccess, deleteError }] = useDeleteServiceMutation();
+
     useEffect(() => {
       if (data && data.data) {
         const formattedRows = data.data.map((service:IService) => ({
@@ -39,7 +40,7 @@ export default function ViewServices() {
       }
     }, [data]);
     
-    const columns = getColumns()
+    const columns = getColumns(deleteService)
     
   return (
     <div>

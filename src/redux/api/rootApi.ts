@@ -24,6 +24,6 @@ export const rootApi = createApi({
     unknown,
     ICustomErrorType
   >,
-  tagTypes: [],
+  tagTypes: ["service"],
   endpoints: () => ({}),
 });

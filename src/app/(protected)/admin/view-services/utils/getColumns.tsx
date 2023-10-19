@@ -1,7 +1,9 @@
+import { ICustomErrorType } from '@/types/type';
+import { MutationActionCreatorResult, MutationDefinition, BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query';
 import Link from 'next/link';
 import React from 'react';
 
-export const getColumns = () => {
+export const getColumns = (deleteService: { (arg: string): MutationActionCreatorResult<MutationDefinition<string, BaseQueryFn<string | FetchArgs, unknown, ICustomErrorType>, never, void, "api">>; (arg0: any): void; }) => {
   const columns = [
     {
       field: 'service',
@@ -74,7 +76,7 @@ export const getColumns = () => {
             Edit
           </Link>
           <button
-            onClick={() => console.log(params.row.id)}
+            onClick={() => deleteService(params.row.id)}
             className="action-button"
           >
             Delete

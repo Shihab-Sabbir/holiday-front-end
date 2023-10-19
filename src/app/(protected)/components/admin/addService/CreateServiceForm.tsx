@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { format, parse } from "date-fns";
 import {
   FormControl,
   InputLabel,
@@ -9,9 +8,10 @@ import {
   Select,
   TextField,
   Button,
-  Box,
-  Typography,
 } from "@mui/material";
+import { useCreateServiceMutation } from "@/redux/api/service/serviceApi";
+import { SERVICE_TYPE } from "@/redux/api/service/type";
+import ImageUpload from "@/app/components/shared/image/ImageUpload";
 
 interface FormData {
   [key: string]: string | Date | File | null;
@@ -32,7 +32,9 @@ export default function CreateServiceForm() {
     country: "",
     image: null,
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [createService,{data,isLoading,isSuccess,error}] = useCreateServiceMutation()
+  console.log({data,isLoading,isSuccess,error})
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -49,7 +51,7 @@ export default function CreateServiceForm() {
       country: "",
       image: null,
     });
-    setImagePreview(null);
+    setUploadedImage(null);
   };
 
   const handleFormChange = (field: string, value: string | Date) => {
@@ -59,21 +61,26 @@ export default function CreateServiceForm() {
     });
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    if (file) {
-      setFormData({ ...formData, image: file });
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files && event.target.files[0];
+  //   if (file) {
+  //     setFormData({ ...formData, image: file });
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       setImagePreview(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const handleSubmit = () => {
     console.log("Selected Service:", selectedService);
     console.log("Form Datam:", {service:selectedService,...formData});
+
+    createService({
+      service: selectedService as SERVICE_TYPE,
+      ...formData,
+    })
 
     setSelectedService("flight");
     // setFormData({
@@ -89,7 +96,7 @@ export default function CreateServiceForm() {
     //   country: "",
     //   image: null,
     // });
-    setImagePreview(null);
+    setUploadedImage(null);
   };
 
   return (
@@ -142,7 +149,7 @@ export default function CreateServiceForm() {
           type="date"
           value={formData.startDate}
           onChange={(e) =>
-            handleFormChange("startDate",parse(e.target.value,"yyyy-MM-dd", new Date()))
+            handleFormChange("startDate",e.target.value)
           }
         />
 
@@ -173,7 +180,7 @@ export default function CreateServiceForm() {
           type="time"
           value={formData.time}
           onChange={(e) =>
-            handleFormChange("time", parse(e.target.value, "HH:mm", new Date()))
+            handleFormChange("time", e.target.value)
           }
         />
         <TextField
@@ -186,23 +193,13 @@ export default function CreateServiceForm() {
           name="description"
           label="Description"
           multiline
-          rows={4}
+          rows={6}
           value={formData.description}
           onChange={(e) => handleFormChange("description", e.target.value)}
         />
 
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <ImageUpload uploadedImage={uploadedImage} setUploadedImage={setUploadedImage}/>
 
-        {imagePreview && (
-          <div>
-            <Typography>Selected Image:</Typography>
-            <img
-              src={imagePreview}
-              alt="Image Preview"
-              style={{ maxWidth: "100px" }}
-            />
-          </div>
-        )}
       </div>
       <Button
         fullWidth

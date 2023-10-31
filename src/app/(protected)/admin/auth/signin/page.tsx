@@ -5,7 +5,7 @@ import { Button, TextField } from "@mui/material";
 import { useAdminSignInMutation } from "@/redux/api/auth/authApi";
 import { setAuthData } from "@/redux/services/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import Link from "next/link";
+
 
 export default function AdminSignin() {
   const [adminSignIn, { data, isLoading, isSuccess, error }] =
@@ -20,7 +20,7 @@ export default function AdminSignin() {
 
   const [formData, setFormData] = useState(initialFormData);
 
-  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -43,7 +43,7 @@ export default function AdminSignin() {
         dispatch(setAuthData(data.data));
       }
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data,dispatch]);
 
   return (
     <div className="h-screen w-full grid place-content-center">

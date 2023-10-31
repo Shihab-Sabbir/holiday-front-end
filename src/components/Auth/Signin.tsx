@@ -3,6 +3,7 @@ import { Button, TextField } from "@mui/material";
 import { useLoginUserMutation } from "@/redux/api/auth/authApi";
 import { setAuthData } from "@/redux/services/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import SocialLogin from "./SocialLogin";
 
 export default function Signin() {
   const [loginUser, { data, isLoading, isSuccess, error }] =
@@ -42,7 +43,7 @@ export default function Signin() {
         dispatch(setAuthData(data.data));
       }
     }
-  }, [isSuccess, data,dispatch]);
+  }, [isSuccess, data, dispatch]);
 
   return (
     <div className="py-5 h-[300px]">
@@ -70,12 +71,19 @@ export default function Signin() {
             backgroundColor: "var(--color-primary) !important",
             color: "white",
             paddingY: "15px",
-            marginTop: "72px",
           }}
         >
-         {isLoading ? "Signing..." : "Sign in"}
+          {isLoading ? "Signing..." : "Sign in"}
         </Button>
       </form>
+      <div className="flex items-center pt-4 space-x-1">
+        <div className="flex-1 h-px sm:w-16"></div>
+        <p className="px-3 text-sm">
+          Login with social accounts
+        </p>
+        <div className="flex-1 h-px sm:w-16"></div>
+      </div>
+          <SocialLogin/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import DropNavbar from "@/components/Navbar/DropNavbar";
 import ReduxProvider from "@/lib/ReduxProvider";
+import ThemeRegistry from "@/theme/themeRegistry";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,12 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-[#F2F2F2] relative min-h-screen max-w-[100vw] overflow-x-hidden`}
       >
+        <ThemeRegistry>
         <ReduxProvider>
           <DropNavbar />
           <div>{children}</div>
         </ReduxProvider>
+        </ThemeRegistry>
       </body>
     </html>
   );

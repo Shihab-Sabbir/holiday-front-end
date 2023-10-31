@@ -7,6 +7,7 @@ import { DialogContent, IconButton, Tab, Tabs } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Signin from "./Signin";
 import Signup from "./Signup";
+import SigninTest from "./SigninTest";
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -105,7 +106,7 @@ export default function AuthModal(props: SimpleDialogProps) {
         </DialogTitle>
       <DialogContent>
         <CustomTabPanel value={value} index={0}>
-          <Signin />
+          <SigninTest />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <Signup />

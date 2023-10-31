@@ -1,8 +1,8 @@
 import React from "react";
 
-import superOfferIcon from "../../assets/icons/super_offer.png";
-import myBizIcon from "../../assets/icons/my_bizz.png";
-import myTripIcon from "../../assets/icons/my_trip.png";
+import superOfferIcon from "@/assets/icons/super_offer.png";
+import myBizIcon from "@/assets/icons/my_bizz.png";
+import myTripIcon from "@/assets/icons/my_trip.png";
 import Image from "next/image";
 import { SiAuthy } from "react-icons/si";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";

@@ -4,6 +4,7 @@ import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateSearchData } from "@/redux/services/Search/SearchSlice";
+import AutoCompleteLocation from "./AutoCompleteLocation";
 
 export default function FlightTravelForm() {
   const { searchData } = useAppSelector((state) => state.search);
@@ -56,15 +57,7 @@ export default function FlightTravelForm() {
           <div className="flex items-center gap-[15px] !h-full">
             <div className="py-[10px] px-[19px] max-w-[260px]">
               <p className="text-[14px]">From</p>
-              <input
-                type="text"
-                value={searchData.from}
-                className="text-[30px] font-bold max-w-full border-none focus:outline-none "
-                onChange={(e) => {
-                  dispatch(updateSearchData({ from: e.target.value }));
-                }}
-              />
-              <p className="text-[14px]">DEL, Delhi Airport India</p>
+              <AutoCompleteLocation location='from'/>
             </div>
             <div className="h-[112px] border-r relative">
               <div className="absolute top-[40%] right-[-12px] text-2xl z-10 bg-white text-primary cursor-pointer">
@@ -73,15 +66,7 @@ export default function FlightTravelForm() {
             </div>
             <div className="py-[10px] px-[19px] max-w-[260px] max-h-full">
               <p className="text-[14px]">To</p>
-              <input
-                type="text"
-                value={searchData.to}
-                className="text-[30px] font-bold max-w-full border-none focus:outline-none"
-                onChange={(e) => {
-                  dispatch(updateSearchData({ to: e.target.value }));
-                }}
-              />
-              <p className="text-[14px]">BOM, Chhatrapati Shivaji Inter...</p>
+              <AutoCompleteLocation location='to'/>
             </div>
             <div className="h-[112px] border-r"> </div>
             <div className="h-full py-[10px] px-[19px] max-w-[260px]">

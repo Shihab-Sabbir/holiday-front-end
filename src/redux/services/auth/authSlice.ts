@@ -1,15 +1,13 @@
-'use client'
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   accessToken: string;
   refreshToken?: string;
   user: {
-    name : {
+    name: {
       firstName: string;
       lastName: string;
-    },
+    };
     phone_number: string;
     email: string;
     role: string;
@@ -21,7 +19,7 @@ const initialState: AuthState = {
   accessToken: "",
   refreshToken: undefined,
   user: {
-    name:{
+    name: {
       firstName: "",
       lastName: "",
     },
@@ -33,15 +31,19 @@ const initialState: AuthState = {
 };
 
 const loadState = () => {
-  const storedState = localStorage.getItem("holiday-auth");
-  if (storedState) {
-    return JSON.parse(storedState);
+  if (typeof localStorage !== "undefined") {
+    const storedState = localStorage.getItem("holiday-auth");
+    if (storedState) {
+      return JSON.parse(storedState);
+    }
   }
   return initialState;
 };
 
 const saveState = (state: AuthState) => {
-  localStorage.setItem("holiday-auth", JSON.stringify(state));
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem("holiday-auth", JSON.stringify(state));
+  }
 };
 
 const authSlice = createSlice({
@@ -49,7 +51,7 @@ const authSlice = createSlice({
   initialState: loadState(),
   reducers: {
     setAuthData: (state, action: PayloadAction<AuthState>) => {
-      console.log({action})
+      console.log({ action });
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
@@ -59,7 +61,9 @@ const authSlice = createSlice({
       state.accessToken = "";
       state.refreshToken = undefined;
       state.user = initialState.user;
-      localStorage.removeItem("holiday-auth");
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem("holiday-auth");
+      }
     },
   },
 });

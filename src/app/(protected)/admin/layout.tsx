@@ -8,7 +8,7 @@ export default function Layout({
   
 
   return (
-    <AuthChecker userRole={['admin','superadmin','user']}>
+    <AuthChecker userRole={['admin','superadmin']}>
          {children}
     </AuthChecker>
   )

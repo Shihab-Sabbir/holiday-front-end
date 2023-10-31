@@ -1,38 +1,69 @@
-import {
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import React from "react";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import React, { useRef } from "react";
 import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { updateSearchData } from "@/redux/services/Search/SearchSlice";
 
 export default function FlightTravelForm() {
+  const { searchData } = useAppSelector((state) => state.search);
+  const dispatch = useAppDispatch();
+
+  const startInput = useRef<HTMLInputElement>(null);
+  const returnInput = useRef<HTMLInputElement>(null);
+
+  const handleStartInput = () => {
+    if (startInput.current) {
+      startInput.current.showPicker();
+    }
+  };
+
+  const handleReturnInput = () => {
+    if (returnInput.current && searchData.isRoundTrip) {
+      returnInput.current.showPicker();
+    };
+  };
+
+  console.log({ searchData });
+
   return (
     <div>
       <div>
         <RadioGroup
           row
           aria-labelledby="demo-row-radio-buttons-group-label"
-          name="row-radio-buttons-group"
+          name="trip_option"
+          value={searchData.isRoundTrip}
+          onChange={(e) => {
+            dispatch(
+              updateSearchData({ isRoundTrip: e.target.value === "true" })
+            );
+          }}
         >
           <FormControlLabel
-            defaultChecked
-            value="One Way"
-            control={<Radio defaultChecked size="small" />}
+            value="false"
+            control={<Radio size="small" />}
             label="One Way"
           />
           <FormControlLabel
-            value="Round Trip"
+            value="true"
             control={<Radio size="small" />}
             label="Round Trip"
           />
         </RadioGroup>
+
         <div className="w-full h-[112px] rounded-[8px] border ">
-          <div className="flex items-center gap-[15px] ">
-            <div className=" py-[10px] px-[19px] max-w-[260px]">
+          <div className="flex items-center gap-[15px] !h-full">
+            <div className="py-[10px] px-[19px] max-w-[260px]">
               <p className="text-[14px]">From</p>
-              <p className="text-[30px] font-bold">Delhi</p>
+              <input
+                type="text"
+                value={searchData.from}
+                className="text-[30px] font-bold max-w-full border-none focus:outline-none "
+                onChange={(e) => {
+                  dispatch(updateSearchData({ from: e.target.value }));
+                }}
+              />
               <p className="text-[14px]">DEL, Delhi Airport India</p>
             </div>
             <div className="h-[112px] border-r relative">
@@ -40,41 +71,119 @@ export default function FlightTravelForm() {
                 <MdOutlineSwapHorizontalCircle />
               </div>
             </div>
-            <div className=" py-[10px] px-[19px] max-w-[260px]">
+            <div className="py-[10px] px-[19px] max-w-[260px] max-h-full">
               <p className="text-[14px]">To</p>
-              <p className="text-[30px] font-bold">Mumbai</p>
+              <input
+                type="text"
+                value={searchData.to}
+                className="text-[30px] font-bold max-w-full border-none focus:outline-none"
+                onChange={(e) => {
+                  dispatch(updateSearchData({ to: e.target.value }));
+                }}
+              />
               <p className="text-[14px]">BOM, Chhatrapati Shivaji Inter...</p>
             </div>
             <div className="h-[112px] border-r"> </div>
-            <div className=" py-[10px] px-[19px] max-w-[260px]">
-              <div className="text-[14px] flex items-center gap-3">
-                <p>Departure</p>
-                <BsChevronDown className="text-primary" />
-              </div>
-              <p className="text-[30px] font-bold">
-                25 <span className="font-normal text-[20px]">Oct,23</span>
+            <div className="h-full py-[10px] px-[19px] max-w-[260px]">
+              <p className="text-[14px] flex items-center gap-3">
+                <label
+                  onClick={()=>handleStartInput()}
+                  htmlFor="start-date-input"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="text-[14px] flex items-center gap-3">
+                    <p>Departure</p>
+                    <BsChevronDown className="text-primary" />
+                  </div>
+                  <p className="text-[30px] font-bold">
+                    {searchData.startDate}{" "}
+                    <span className="font-normal text-[20px]">
+                      {searchData.startMonth}, {searchData.startYear}
+                    </span>
+                  </p>
+                  <p className="text-[14px]">{searchData.startDay}</p>
+                </label>
               </p>
-              <p className="text-[14px]">Sunday</p>
+              <input
+                type="date"
+                id="start-date-input"
+                value={searchData.startDateFull}
+                ref={startInput}
+                className="h-0 w-0"
+                onChange={(e) => {
+                  const date = e.target.value;
+                  dispatch(
+                    updateSearchData({
+                      startDateFull: new Date(date).getTime(),
+                    })
+                  );
+                }}
+                min={new Date().toISOString().split('T')[0]}
+              />
             </div>
             <div className="h-[112px] border-r"> </div>
-            <div className=" py-[10px] px-[19px] max-w-[260px]">
-              <div className="text-[14px] flex items-center gap-3">
-                <p>Return</p>
-                <BsChevronDown className="text-primary" />
-              </div>
-              <p className="text-[30px] font-bold">
-                25 <span className="font-normal text-[20px]">Oct,23</span>
+            <div className="h-full py-[10px] px-[19px] max-w-[260px]">
+              <p className="text-[14px] flex items-center gap-3">
+                <label
+                  onClick={()=>handleReturnInput()}
+                  htmlFor="return-date-input"
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="text-[14px] flex items-center gap-3">
+                    <p>Return</p>
+                    <BsChevronDown className="text-primary" />
+                  </div>
+                  <p className="text-[30px] font-bold">
+                    {searchData.returnDate}{" "}
+                    <span className="font-normal text-[20px]">
+                      {searchData.returnMonth}, {searchData.returnYear}
+                    </span>
+                  </p>
+                  <p className="text-[14px]">{searchData.returnDay}</p>
+                </label>
               </p>
-              <p className="text-[14px]">Sunday</p>
+              <input
+                type="date"
+                id="return-date-input"
+                value={searchData.returnDateFull}
+                ref={returnInput}
+                className="h-0 w-0"
+                onChange={(e) => {
+                  const date = e.target.value;
+                  dispatch(
+                    updateSearchData({
+                      returnDateFull: new Date(date).getTime(),
+                    })
+                  );
+                }}
+                min={new Date(searchData.startDateFull as number).toISOString().split('T')[0]}
+              />
             </div>
             <div className="h-[112px] border-r"> </div>
-            <div className=" py-[10px] px-[19px] max-w-[260px]">
-              <div className="text-[14px] flex items-center gap-3">
+            <div className="py-[10px] px-[19px] max-w-[260px]">
+              <p className="text-[14px] flex items-center gap-3">
                 <p>Traverller & Class</p>
                 <BsChevronDown className="text-primary" />
-              </div>
-              <p className="text-[30px] font-bold">
-                1 <span className="font-normal text-[20px]">Traveller</span>
+              </p>
+              <p className="text-[30px] font-bold flex items-center">
+                <input
+                  type="number"
+                  className="text-[30px] font-bold max-w-[45px] pr-1 border-none focus:outline-none"
+                  value={searchData.persons}
+                  onChange={(e) => {
+                    let inputValue = Number(e.target.value);
+                    let dispatchValue = inputValue % 10;
+
+                    if (dispatchValue === 0) {
+                      dispatchValue = 1;
+                    } else if (dispatchValue > 9) {
+                      dispatchValue = 9;
+                    }
+
+                    dispatch(updateSearchData({ persons: dispatchValue }));
+                  }}
+                />
+                <span className="font-normal text-[20px]">Traveller</span>
               </p>
               <p className="text-[14px]">Economy</p>
             </div>

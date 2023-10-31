@@ -21,7 +21,7 @@ interface IFormattedRow {
 export default function ViewServices() {
     const [rows, setRows] = useState<Partial<IFormattedRow>[] | []>([]); 
     const { data, isLoading, error } = useGetAllServiceQuery();
-    const [deleteService, {  isDeleteLoading, isDeleteSuccess, deleteError }] = useDeleteServiceMutation();
+    const [deleteService] = useDeleteServiceMutation();
 
     useEffect(() => {
       if (data && data.data) {

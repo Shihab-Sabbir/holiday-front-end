@@ -42,7 +42,7 @@ export default function Signin() {
         dispatch(setAuthData(data.data));
       }
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, data,dispatch]);
 
   return (
     <div className="py-5 h-[300px]">

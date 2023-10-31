@@ -89,7 +89,7 @@ const searchSlice = createSlice({
         state.service = service;
       }
 
-      if (service !== initialState.service) {
+      if (service && service !== state.service) {
         state.searchData = { ...initialState.searchData };
       }
 

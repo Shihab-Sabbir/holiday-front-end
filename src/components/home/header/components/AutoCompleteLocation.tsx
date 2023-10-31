@@ -23,13 +23,14 @@ const AutoCompleteLocation = ({ location }: ILocation) => {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<AirportData[]>([]);
   const [allAirports, setAllAirports] = useState<AirportData[]>([]);
+
   const { searchData } = useAppSelector((state) => state.search);
 
   const fetchAirports = async () => {
     try {
       const airportData: AirportData[] = await getAirports();
       setAllAirports(airportData);
-      setSuggestions(airportData.slice(0, 5)); // Initially load the first 10 data as options
+      setSuggestions(airportData.slice(0, 5)); 
     } catch (error) {
       console.error("Error fetching airport data:", error);
     }
@@ -45,7 +46,7 @@ const AutoCompleteLocation = ({ location }: ILocation) => {
     const input = event.target.value;
     setInputValue(input);
 
-    // Filter and set suggestions based on multiple fields
+
     const filteredAirports = allAirports.filter(
       (airport) =>
         airport?.iso_country?.toLowerCase().includes(input.toLowerCase()) ||
@@ -55,7 +56,7 @@ const AutoCompleteLocation = ({ location }: ILocation) => {
         airport?.name?.toLowerCase().includes(input.toLowerCase())
     );
 
-    setSuggestions(filteredAirports.slice(0, 5)); // Show the most matching 10 data
+    setSuggestions(filteredAirports.slice(0, 5)); 
   };
 
   const handleSuggestionSelected = (selectedAirport: AirportData) => {
@@ -69,9 +70,9 @@ const AutoCompleteLocation = ({ location }: ILocation) => {
       className="py-1 px-2 cursor-pointer hover:bg-blue-50 w-[250px]"
       onClick={() => handleSuggestionSelected(suggestion)}
     >
-      <p className="font-semibold">{suggestion.name},</p>
+      <p className="font-semibold">{suggestion.municipality},</p>
       <p>
-        <span>{suggestion.municipality}, </span>
+        <span>{suggestion.name}, </span>
         <span className="text-primary">{suggestion.iso_country}</span>
       </p>
     </div>

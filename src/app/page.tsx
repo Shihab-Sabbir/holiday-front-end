@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "./components/Navbar/Navbar";
-import Header from "./components/home/header/Header";
-import Advertise from "./components/home/advertise/Advertise";
-import Offer from "./components/home/offer/Offer";
-import TermsAndFaq from "./components/home/TermsAndFaq/TermsAndFaq";
-import Footer from "./components/Footer/Footer";
+import Navbar from "@/components/Navbar/Navbar";
+import Header from "@/components/home/header/Header";
+import Advertise from "@/components/home/advertise/Advertise";
+import Offer from "@/components/home/offer/Offer";
+import TermsAndFaq from "@/components/home/TermsAndFaq/TermsAndFaq";
+import Footer from "@/components/Footer/Footer";
 
 
 export default function Home() {

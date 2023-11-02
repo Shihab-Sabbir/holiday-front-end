@@ -4,8 +4,13 @@ import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateSearchData } from "@/redux/services/Search/SearchSlice";
+import AutoCompleteLocation from "./AutoCompleteLocation";
+import CustomPopOver from "@/components/shared/popOver/CustomPopOver";
 
 export default function FlightTravelForm() {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
   const { searchData } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
 
@@ -21,7 +26,7 @@ export default function FlightTravelForm() {
   const handleReturnInput = () => {
     if (returnInput.current && searchData.isRoundTrip) {
       returnInput.current.showPicker();
-    };
+    }
   };
 
   console.log({ searchData });
@@ -56,15 +61,7 @@ export default function FlightTravelForm() {
           <div className="flex items-center gap-[15px] !h-full">
             <div className="py-[10px] px-[19px] max-w-[260px]">
               <p className="text-[14px]">From</p>
-              <input
-                type="text"
-                value={searchData.from}
-                className="text-[30px] font-bold max-w-full border-none focus:outline-none "
-                onChange={(e) => {
-                  dispatch(updateSearchData({ from: e.target.value }));
-                }}
-              />
-              <p className="text-[14px]">DEL, Delhi Airport India</p>
+              <AutoCompleteLocation location="from" />
             </div>
             <div className="h-[112px] border-r relative">
               <div className="absolute top-[40%] right-[-12px] text-2xl z-10 bg-white text-primary cursor-pointer">
@@ -73,21 +70,13 @@ export default function FlightTravelForm() {
             </div>
             <div className="py-[10px] px-[19px] max-w-[260px] max-h-full">
               <p className="text-[14px]">To</p>
-              <input
-                type="text"
-                value={searchData.to}
-                className="text-[30px] font-bold max-w-full border-none focus:outline-none"
-                onChange={(e) => {
-                  dispatch(updateSearchData({ to: e.target.value }));
-                }}
-              />
-              <p className="text-[14px]">BOM, Chhatrapati Shivaji Inter...</p>
+              <AutoCompleteLocation location="to" />
             </div>
             <div className="h-[112px] border-r"> </div>
             <div className="h-full py-[10px] px-[19px] max-w-[260px]">
               <p className="text-[14px] flex items-center gap-3">
                 <label
-                  onClick={()=>handleStartInput()}
+                  onClick={() => handleStartInput()}
                   htmlFor="start-date-input"
                   style={{ cursor: "pointer" }}
                 >
@@ -118,14 +107,14 @@ export default function FlightTravelForm() {
                     })
                   );
                 }}
-                min={new Date().toISOString().split('T')[0]}
+                min={new Date().toISOString().split("T")[0]}
               />
             </div>
             <div className="h-[112px] border-r"> </div>
             <div className="h-full py-[10px] px-[19px] max-w-[260px]">
               <p className="text-[14px] flex items-center gap-3">
                 <label
-                  onClick={()=>handleReturnInput()}
+                  onClick={() => handleReturnInput()}
                   htmlFor="return-date-input"
                   style={{ cursor: "pointer" }}
                 >
@@ -156,36 +145,51 @@ export default function FlightTravelForm() {
                     })
                   );
                 }}
-                min={new Date(searchData.startDateFull as number).toISOString().split('T')[0]}
+                min={
+                  new Date(searchData.startDateFull as number)
+                    .toISOString()
+                    .split("T")[0]
+                }
               />
             </div>
             <div className="h-[112px] border-r"> </div>
             <div className="py-[10px] px-[19px] max-w-[260px]">
-              <p className="text-[14px] flex items-center gap-3">
-                <p>Traverller & Class</p>
-                <BsChevronDown className="text-primary" />
-              </p>
-              <p className="text-[30px] font-bold flex items-center">
-                <input
-                  type="number"
-                  className="text-[30px] font-bold max-w-[45px] pr-1 border-none focus:outline-none"
-                  value={searchData.persons}
-                  onChange={(e) => {
-                    let inputValue = Number(e.target.value);
-                    let dispatchValue = inputValue % 10;
+              <CustomPopOver
+                anchorEl={anchorEl}
+                setAnchorEl={setAnchorEl}
+                content=<div>
+                <p className="pb-2">Add Passenger Number</p>
+                  <input
+                    type="number"
+                    className="text-[30px] font-bold w-[250px] pr-1 border h-[50px] px-2"
+                    value={searchData.persons}
+                    onChange={(e) => {
+                      let inputValue = Number(e.target.value);
+                      let dispatchValue = inputValue % 10;
 
-                    if (dispatchValue === 0) {
-                      dispatchValue = 1;
-                    } else if (dispatchValue > 9) {
-                      dispatchValue = 9;
-                    }
+                      if (dispatchValue === 0) {
+                        dispatchValue = 1;
+                      } else if (dispatchValue > 9) {
+                        dispatchValue = 9;
+                      }
 
-                    dispatch(updateSearchData({ persons: dispatchValue }));
-                  }}
-                />
-                <span className="font-normal text-[20px]">Traveller</span>
-              </p>
-              <p className="text-[14px]">Economy</p>
+                      dispatch(updateSearchData({ persons: dispatchValue }));
+                    }}
+                  />
+                    <p className="py-2">Select Travel Class</p>
+                </div>
+                buttonContent=<div className="w-[260px]">
+                  <p className="text-[14px] flex items-center gap-3">
+                    <p>Traverller & Class</p>
+                    <BsChevronDown className="text-primary" />
+                  </p>
+                  <p className="text-[30px] font-bold flex items-center">
+                    {searchData.persons + ' '}
+                    <span className="font-normal text-[20px]"> Traveller</span>
+                  </p>
+                  <p className="text-[14px]">Economy</p>
+                </div>
+              />
             </div>
           </div>
         </div>

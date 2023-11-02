@@ -12,8 +12,16 @@ const dayNames = [
 
 interface IPayload {
   service: string;
-  from: string;
-  to: string;
+  from: {
+    name: string;
+    iso_country: string;
+    municipality: string;
+  };
+  to: {
+    name: string;
+    iso_country: string;
+    municipality: string;
+  };
   isRoundTrip: boolean;
   startDateFull: number;
   startDate: number;
@@ -40,8 +48,16 @@ interface SearchState {
 const initialState: SearchState = {
   service: "flight",
   searchData: {
-    from: "Dhaka",
-    to: "Cox's Bazar",
+    from: {
+      name: "Hazrat Shahjalal International Airport",
+      iso_country: "BD",
+      municipality: "Dhaka",
+    },
+    to: {
+      name: "Cox's Bazar Airport",
+      iso_country: "BD",
+      municipality: "Cox's Bazar",
+    },
     startDateFull: Date.now(),
     isRoundTrip: true,
     startDate: new Date().getDate(),
@@ -73,7 +89,7 @@ const searchSlice = createSlice({
         state.service = service;
       }
 
-      if (service !== initialState.service) {
+      if (service && service !== state.service) {
         state.searchData = { ...initialState.searchData };
       }
 

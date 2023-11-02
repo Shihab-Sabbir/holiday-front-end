@@ -1,21 +1,28 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Form from "../ui/Form";
 import FormInput from "../ui/FormInput";
 import { Button, Stack } from "@mui/material";
+import SocialLogin from "./SocialLogin";
+import { useLoginUserMutation } from "@/redux/api/auth/authApi";
 
 export default function SigninTest() {
-  const onSubmit = (values: signInFileds) => {
+  const [signIn] = useLoginUserMutation();
+  const onSubmit = async (values: signInFileds) => {
     console.log(values)
+    const response = await signIn(values)
+    console.log({response})
   }
   return <div>
     <Form submitHandler={onSubmit} resolver={zodResolver(signInschema)}>
-      <Stack spacing={2}>
-        <FormInput<signInFileds> name="email" label="Email" size="small"/>
-        <FormInput<signInFileds> name="password" type="password" label="Password" size="small"/>
-        <Button type="submit" variant="contained"> Sign in </Button>
+      <Stack spacing={2} sx={{py:"10px"}}>
+        <FormInput<signInFileds> name="email" label="Email"/>
+        <FormInput<signInFileds> name="password" type="password" label="Password"/>
+        <Button type="submit" variant="contained" size="large"> Sign in </Button>
       </Stack>
     </Form>
+    <SocialLogin/>
   </div>;
 }
 

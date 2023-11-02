@@ -56,11 +56,11 @@ const themeOptions: ThemeOptions = {
             }
         }, 
         {
-            props:{variant:"contained"},
+            props:{variant:"contained",},
             style:{
                 backgroundColor: "#008cff",
                 "&:hover": {
-                    backgroundColor: "#017ee5"
+                    backgroundColor: "#017ee5",
                   }
             }
         }

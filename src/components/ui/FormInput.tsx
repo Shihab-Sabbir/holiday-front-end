@@ -33,8 +33,6 @@ const FormInput = <T extends unknown> ({
     formState: { errors },
   } = useFormContext();
 
-  console.log({errors})
-
   return (
     <>
       <Controller

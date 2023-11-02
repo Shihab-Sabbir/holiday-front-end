@@ -25,10 +25,7 @@ export const serviceApi = rootApi.injectEndpoints({
       }),
       providesTags:['service']
     }),
-    updateService: builder.mutation<
-      IService,
-      { id: string; data: Partial<IService> }
-    >({
+    updateService: builder.mutation<IService, { id: string; data: Partial<IService> }>({
       query: ({ id, data }) => ({
         url: `/services/${id}`,
         method: "PATCH",

@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
   accessToken: string;
-  refreshToken?: string;
   user: {
     name: {
       firstName: string;
@@ -17,7 +16,6 @@ interface AuthState {
 
 const initialState: AuthState = {
   accessToken: "",
-  refreshToken: undefined,
   user: {
     name: {
       firstName: "",
@@ -53,7 +51,6 @@ const authSlice = createSlice({
     setAuthData: (state, action: PayloadAction<AuthState>) => {
       console.log({ action });
       state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
       saveState(state);
     },

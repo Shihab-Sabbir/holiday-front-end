@@ -5,18 +5,25 @@ import {
   IRefreshTokenResponse,
   ISignupUser,
 } from "./type";
+import { setAuthData } from "@/redux/services/auth/authSlice";
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}auth`,
+    baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth`,
   }),
   endpoints: (builder) => ({
     loginUser: builder.mutation<ILoginUserResponse, ILoginUser>({
       query: (body) => ({
-        url: "/signin",
+        url: "/login",
         method: "POST",
         body,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          const patchResult = dispatch(setAuthData(data))
+        } catch {}
+      },
     }),
     adminSignIn: builder.mutation<ILoginUserResponse, ILoginUser>({
       query: (body) => ({

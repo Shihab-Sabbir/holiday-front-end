@@ -1,8 +1,8 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { updateSearchData } from "@/redux/services/Search/SearchSlice";
 import getAirports from "../utils/getAirports";
 import CustomPopOver from "@/components/shared/popOver/CustomPopOver";
+import { updateSearchData } from "@/redux/features/Search/SearchSlice";
 
 interface AirportData {
   iso_country: string;

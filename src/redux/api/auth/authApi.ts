@@ -1,49 +1,55 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  ILoginUserResponse,
-  ILoginUser,
-  IRefreshTokenResponse,
-  ISignupUser,
-} from "./type";
-import { setAuthData } from "@/redux/services/auth/authSlice";
+import { rootApi } from "../rootApi";
+import { ILoginUser, ILoginUserResponse, IRefreshTokenResponse, ISignupUser } from "@/types/auth.types";
+import { logout, setAuthData } from "@/redux/features/auth/authSlice";
+import { IApiReponse } from "@/types/api.types";
 
-export const authApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/auth`,
-  }),
+export const authApi = rootApi.injectEndpoints({
   endpoints: (builder) => ({
-    loginUser: builder.mutation<ILoginUserResponse, ILoginUser>({
+    loginUser: builder.mutation<IApiReponse<ILoginUserResponse>, ILoginUser>({
       query: (body) => ({
-        url: "/login",
+        url: "/auth/signin",
         method: "POST",
         body,
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          const { data } = await queryFulfilled;
-          const patchResult = dispatch(setAuthData(data))
+          const response = await queryFulfilled;
+          dispatch(setAuthData(response?.data?.data))
         } catch {}
       },
     }),
-    adminSignIn: builder.mutation<ILoginUserResponse, ILoginUser>({
+    adminSignIn: builder.mutation<IApiReponse<ILoginUserResponse>, ILoginUser>({
       query: (body) => ({
-        url: "/admin-signin",
+        url: "/auth/admin-signin",
         method: "POST",
         body,
       }),
     }),
     signUp: builder.mutation<void, ISignupUser>({
       query: (body) => ({
-        url: "/signup",
+        url: "/auth/signup",
         method: "POST",
         body,
       }),
     }),
-    refreshToken: builder.mutation<IRefreshTokenResponse, void>({
+    logOut: builder.mutation<IApiReponse<null>, void>({
       query: () => ({
-        url: "/refresh-token",
+        url: "/auth/logout",
         method: "POST",
       }),
+      onQueryStarted(_arg, { dispatch }) {
+        dispatch(logout())
+      }
+    }),
+    refreshToken: builder.query<IApiReponse<IRefreshTokenResponse>, void>({
+      query: () => "/auth/refresh-token",
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const response = await queryFulfilled;
+          dispatch(setAuthData(response?.data?.data))
+        } catch {}
+      },
     }),
   }),
 });
@@ -52,5 +58,6 @@ export const {
   useLoginUserMutation,
   useAdminSignInMutation,
   useSignUpMutation,
-  useRefreshTokenMutation,
+  useRefreshTokenQuery, 
+  useLogOutMutation
 } = authApi;

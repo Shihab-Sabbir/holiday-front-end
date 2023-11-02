@@ -6,14 +6,22 @@ import FormInput from "../ui/FormInput";
 import { Button, Stack } from "@mui/material";
 import SocialLogin from "./SocialLogin";
 import { useLoginUserMutation } from "@/redux/api/auth/authApi";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function SigninTest() {
-  const [signIn] = useLoginUserMutation();
+  const [signIn, {error}] = useLoginUserMutation();
   const onSubmit = async (values: signInFileds) => {
-    console.log(values)
     const response = await signIn(values)
-    console.log({response})
   }
+
+  useEffect(()=>{
+    console.log({error})
+    if(error && 'data' in error){
+      toast.error(error?.data?.message || "Something went wrong")
+    }
+  }, [error])
+
   return <div>
     <Form submitHandler={onSubmit} resolver={zodResolver(signInschema)}>
       <Stack spacing={2} sx={{py:"10px"}}>

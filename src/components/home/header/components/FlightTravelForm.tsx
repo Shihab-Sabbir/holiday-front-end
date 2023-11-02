@@ -3,9 +3,9 @@ import React, { useRef } from "react";
 import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { updateSearchData } from "@/redux/services/Search/SearchSlice";
 import AutoCompleteLocation from "./AutoCompleteLocation";
 import CustomPopOver from "@/components/shared/popOver/CustomPopOver";
+import { updateSearchData } from "@/redux/features/Search/SearchSlice";
 
 export default function FlightTravelForm() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(

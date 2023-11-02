@@ -16,8 +16,8 @@ import busesUnSelected from "@/assets/icons/bus_unselected.png";
 import busesSelected from "@/assets/icons/bus_selected.png";
 import cabsUnSelected from "@/assets/icons/cab_unselected.png";
 import cabsSelected from "@/assets/icons/cab_selected.png";
-import { updateSearchData } from "@/redux/services/Search/SearchSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { updateSearchData } from "@/redux/features/Search/SearchSlice";
 
 const navigationData = [
   {

@@ -1,16 +1,18 @@
+"use client";
 import React from "react";
-
 import superOfferIcon from "@/assets/icons/super_offer.png";
 import myBizIcon from "@/assets/icons/my_bizz.png";
 import myTripIcon from "@/assets/icons/my_trip.png";
 import Image from "next/image";
-import { SiAuthy } from "react-icons/si";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import NavCurrecyMenu from "./NavbarComponents/NavCurrecyMenu";
 import Logo from "../shared/Logo";
 import AuthButton from "../shared/AuthButton";
+import { useAppSelector } from "@/redux/hooks";
+import { selectAuth } from "@/redux/features/auth/authSlice";
+import ProfileDropDown from "./NavbarComponents/ProfileDropDown";
 
 export default function Navbar() {
+  const {accessToken} = useAppSelector(selectAuth);
   const navigationData = [
     {
       title: "Super Offers",
@@ -44,7 +46,14 @@ export default function Navbar() {
         </div>
       ))}
       <div className="flex items-center">
-        <AuthButton />
+        {
+          accessToken &&
+          <ProfileDropDown />
+        }
+        {
+          !accessToken &&
+          <AuthButton />
+        }
         <div className="lg:w-[126px] h-[42px] grid place-content-center bg-white/10">
           <NavCurrecyMenu />
         </div>

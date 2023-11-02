@@ -10,3 +10,15 @@ export interface ICustomErrorType {
     success: boolean;
   };
 }
+
+
+export interface IApiReponse<T> {
+  statusCode: number;
+  success: boolean;
+  message?: string | null;
+  meta?: {
+    page: number;
+    limit: number;
+  };
+  data: T;
+}

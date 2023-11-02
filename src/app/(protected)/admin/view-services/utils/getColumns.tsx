@@ -1,4 +1,4 @@
-import { ICustomErrorType } from '@/types/type';
+import { ICustomErrorType } from '@/types/api.types';
 import { MutationActionCreatorResult, MutationDefinition, BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query';
 import Link from 'next/link';
 import React from 'react';

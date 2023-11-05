@@ -1,43 +1,44 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateSearchData } from "@/redux/services/Search/SearchSlice";
-import getAirports from "../utils/getAirports";
+import getLocations from "../utils/getLocations";
 import CustomPopOver from "@/components/shared/popOver/CustomPopOver";
 
 interface ILocationData {
   iso_country: string;
-  iso_region: string;
-  local_code: string;
+  geonameid: string;
   municipality: string;
   name: string;
 }
 
 interface IProps {
   location: "from" | "to";
+  service: string;
 }
 
-const AutoCompleteLocation = ({ location }: IProps) => {
+const AutoCompleteLocation = ({ location, service }: IProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<ILocationData[]>([]);
-  const [allAirports, setAllAirports] = useState<ILocationData[]>([]);
+  const [allLocations, setAllLocations] = useState<ILocationData[]>([]);
 
   const { searchData } = useAppSelector((state) => state.search);
+  console.log({allLocations})
 
-  const fetchAirports = async () => {
+  const fetchLocations = async () => {
     try {
-      const airportData: ILocationData[] = await getAirports();
-      setAllAirports(airportData);
-      setSuggestions(airportData.slice(0, 5)); 
+      const LocationData: ILocationData[] = await getLocations();
+      setAllLocations(LocationData);
+      setSuggestions(LocationData.slice(0, 5)); 
     } catch (error) {
-      console.error("Error fetching airport data:", error);
+      console.error("Error fetching Location data:", error);
     }
   };
 
   useEffect(() => {
-    fetchAirports();
+    fetchLocations();
   }, []);
 
   const dispatch = useAppDispatch();
@@ -46,30 +47,29 @@ const AutoCompleteLocation = ({ location }: IProps) => {
     const input = event.target.value;
     setInputValue(input);
 
-
-    const filteredAirports = allAirports.filter(
-      (airport) =>
-        airport?.iso_country?.toLowerCase().includes(input.toLowerCase()) ||
-        airport?.iso_region?.toLowerCase().includes(input.toLowerCase()) ||
-        airport?.local_code?.toLowerCase().includes(input.toLowerCase()) ||
-        airport?.municipality?.toLowerCase().includes(input.toLowerCase())
+    const filteredLocations = allLocations.filter(
+      (Location) =>
+        Location?.iso_country?.toLowerCase().includes(input.toLowerCase()) ||
+        Location?.geonameid?.toLowerCase().includes(input.toLowerCase()) ||
+        Location?.municipality?.toLowerCase().includes(input.toLowerCase()) ||
+        Location?.name?.toLowerCase().includes(input.toLowerCase())
     );
 
-    setSuggestions(filteredAirports.slice(0, 5)); 
+    setSuggestions(filteredLocations.slice(0, 5)); 
   };
 
-  const handleSuggestionSelected = (selectedAirport: ILocationData) => {
-    dispatch(updateSearchData({ [location]: selectedAirport }));
+  const handleSuggestionSelected = (selectedLocation: ILocationData) => {
+    dispatch(updateSearchData({ [location]: selectedLocation }));
     setAnchorEl(null)
   };
 
   const renderSuggestion = (suggestion: ILocationData) => (
     <div
       key={suggestion.name}
-      className="py-1 px-2 cursor-pointer hover:bg-blue-50 "
+      className="py-1 px-2 cursor-pointer hover:bg-blue-50 w-[250px]"
       onClick={() => handleSuggestionSelected(suggestion)}
     >
-      <p className="font-semibold">{suggestion.municipality},</p>
+       <p className="font-semibold">{suggestion.municipality},</p>
       <p>
         <span>{suggestion.name}, </span>
         <span className="text-primary">{suggestion.iso_country}</span>
@@ -94,15 +94,14 @@ const AutoCompleteLocation = ({ location }: IProps) => {
             {suggestions.map((suggestion) => renderSuggestion(suggestion))}
           </div>
         </div>
-        buttonContent=<div className="max-w-[260px]">
+        buttonContent=<div className="w-[260px]">
           <p className="text-[30px] font-bold">
             {searchData[location]?.municipality}
           </p>
           <p className="text-[14px]">
-            {searchData.from?.iso_country},{" "}
-            {searchData[location]!?.name!?.length > 25
-              ? searchData[location]?.name.slice(0, 25) + "..."
-              : searchData[location]?.name}
+            {searchData[location]!?.iso_country!?.length > 25
+              ? searchData[location]?.iso_country.slice(0, 25) + "..."
+              : searchData[location]?.iso_country}
           </p>
         </div>
       />

@@ -1,35 +1,21 @@
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import React, { useRef } from "react";
+import React from "react";
 import { MdOutlineSwapHorizontalCircle } from "react-icons/md";
 import { BsChevronDown } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { updateSearchData } from "@/redux/services/Search/SearchSlice";
 import AutoCompleteLocation from "./AutoCompleteLocation";
 import CustomPopOver from "@/components/shared/popOver/CustomPopOver";
+import GetDate from "./GetDate";
 
 export default function FlightTravelForm() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+
   const { searchData } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
 
-  const startInput = useRef<HTMLInputElement>(null);
-  const returnInput = useRef<HTMLInputElement>(null);
-
-  const handleStartInput = () => {
-    if (startInput.current) {
-      startInput.current.showPicker();
-    }
-  };
-
-  const handleReturnInput = () => {
-    if (returnInput.current && searchData.isRoundTrip) {
-      returnInput.current.showPicker();
-    }
-  };
-
-  console.log({ searchData });
 
   return (
     <div>
@@ -73,84 +59,12 @@ export default function FlightTravelForm() {
               <AutoCompleteLocation location="to" />
             </div>
             <div className="h-[112px] border-r"> </div>
-            <div className="h-full py-[10px] px-[19px] max-w-[260px]">
-              <p className="text-[14px] flex items-center gap-3">
-                <label
-                  onClick={() => handleStartInput()}
-                  htmlFor="start-date-input"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="text-[14px] flex items-center gap-3">
-                    <p>Departure</p>
-                    <BsChevronDown className="text-primary" />
-                  </div>
-                  <p className="text-[30px] font-bold">
-                    {searchData.startDate}{" "}
-                    <span className="font-normal text-[20px]">
-                      {searchData.startMonth}, {searchData.startYear}
-                    </span>
-                  </p>
-                  <p className="text-[14px]">{searchData.startDay}</p>
-                </label>
-              </p>
-              <input
-                type="date"
-                id="start-date-input"
-                value={searchData.startDateFull}
-                ref={startInput}
-                className="h-0 w-0"
-                onChange={(e) => {
-                  const date = e.target.value;
-                  dispatch(
-                    updateSearchData({
-                      startDateFull: new Date(date).getTime(),
-                    })
-                  );
-                }}
-                min={new Date().toISOString().split("T")[0]}
-              />
+            <div className="h-full pb-[10px] px-[19px] w-fit">
+            <GetDate dateType="start" label="Departure" />
             </div>
             <div className="h-[112px] border-r"> </div>
-            <div className="h-full py-[10px] px-[19px] max-w-[260px]">
-              <p className="text-[14px] flex items-center gap-3">
-                <label
-                  onClick={() => handleReturnInput()}
-                  htmlFor="return-date-input"
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="text-[14px] flex items-center gap-3">
-                    <p>Return</p>
-                    <BsChevronDown className="text-primary" />
-                  </div>
-                  <p className="text-[30px] font-bold">
-                    {searchData.returnDate}{" "}
-                    <span className="font-normal text-[20px]">
-                      {searchData.returnMonth}, {searchData.returnYear}
-                    </span>
-                  </p>
-                  <p className="text-[14px]">{searchData.returnDay}</p>
-                </label>
-              </p>
-              <input
-                type="date"
-                id="return-date-input"
-                value={searchData.returnDateFull}
-                ref={returnInput}
-                className="h-0 w-0"
-                onChange={(e) => {
-                  const date = e.target.value;
-                  dispatch(
-                    updateSearchData({
-                      returnDateFull: new Date(date).getTime(),
-                    })
-                  );
-                }}
-                min={
-                  new Date(searchData.startDateFull as number)
-                    .toISOString()
-                    .split("T")[0]
-                }
-              />
+            <div className="h-full pb-[10px] px-[19px] w-fit">
+            <GetDate dateType="return" label="Return" />
             </div>
             <div className="h-[112px] border-r"> </div>
             <div className="py-[10px] px-[19px] max-w-[260px]">
@@ -161,7 +75,7 @@ export default function FlightTravelForm() {
                 <p className="pb-2">Add Passenger Number</p>
                   <input
                     type="number"
-                    className="text-[30px] font-bold w-[250px] pr-1 border h-[50px] px-2"
+                    className="text-[30px] font-bold max-w-[250px] pr-1 border h-[50px] px-2"
                     value={searchData.persons}
                     onChange={(e) => {
                       let inputValue = Number(e.target.value);

@@ -10,7 +10,7 @@ const dayNames = [
   "Saturday",
 ];
 
-interface IPayload {
+export interface IPayload {
   service: string;
   from: {
     name: string;

@@ -2,7 +2,7 @@ import { signIn } from "next-auth/react";
 
 export default function SocialLogin() {
   const handleGooleLogin = () => {
-        const response = signIn('google', {callbackUrl:process.env.GOOGLE_CALLBACK_URL})
+        const response = signIn('google', {callbackUrl:"http://localhost:3000/auth/signin/social"})
         console.log({response})
   };
   return (

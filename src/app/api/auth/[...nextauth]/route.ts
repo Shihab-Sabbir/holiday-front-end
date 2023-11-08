@@ -1,8 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
+
 
 
 export const authOptions: AuthOptions = {
@@ -40,12 +39,25 @@ export const authOptions: AuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log({user, account, profile, email, credentials})
+      if (account?.provider === "google"){
+        // redirect('/auth/signin/social')
+      }
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true
+      } else {
+        // Return false to display a default error message
+        return false
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
     async session({ session, token }) {
-        console.log({session, token})
       return session;
     },
     async jwt({ token, user, }) {
-        console.log({token, user})
       return {...token, ...user};
     },
   },
